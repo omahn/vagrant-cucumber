@@ -3,7 +3,7 @@ require 'to_regexp'
 Given /^there is a running VM called "([^"]*)"$/ do |vmname|
     machine = vagrant_glue.get_vm(vmname)
 
-    machine.action(:up)
+    machine.action(:up) unless machine.state.id == :running
 
     if machine.provider.capability(:snapshot_list).empty?
         vagrant_glue.vagrant_env.cli('snapshot', 'push', vmname)
